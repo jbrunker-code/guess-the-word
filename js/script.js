@@ -8,7 +8,7 @@ const message = document.querySelector(".message");
 const playAgainButton = document.querySelector(".play-again");
 
 let word = "magnolia";
-const guessedLetters = [];
+let guessedLetters = [];
 let remainingGuesses = 8;
 
 async function getWord(){
@@ -114,6 +114,7 @@ function guessCount(guess){
         message.innerText = `Good guess! The word does have the letter ${guess}!`
     };
     if (remainingGuesses === 0){
+        startOver();
         message.innerText = `Oh no! You're out of guesses. :( The word was "${word}." Better luck next time!`
     } else if (remainingGuesses === 1){
         numRemainingGuesses.innerText = "1 guess";
@@ -126,6 +127,27 @@ function didYouWin (){
     if (wordInProgress.innerText === word.toUpperCase()){
         message.classList.add("win");
         message.innerHTML = `<p class="highlight">You guessed correct the word! Congrats!</p>`;
+        startOver();
     }
-}
+};
 
+function startOver(){
+    guessButton.classList.add("hide");
+    remainingGuessesText.classList.add("hide");
+    guessedLettersElement.classList.add("hide");
+    playAgainButton.classList.remove("hide");  
+};
+
+playAgainButton.addEventListener("click", function(){
+    message.classList.remove("win");
+    message.innerText = "";
+    guessedLettersElement.innerHTML = "";
+    remainingGuesses = 8;
+    guessedLetters = [];
+    numRemainingGuesses.innerText = `${remainingGuesses} guesses`;
+    guessButton.classList.remove("hide");
+    remainingGuessesText.classList.remove("hide");
+    guessedLettersElement.classList.remove("hide");
+    playAgainButton.classList.add("hide");
+    getWord();
+})
